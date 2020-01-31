@@ -10,13 +10,23 @@
                 @foreach($answers as $answer)
                     <div class="media">
                         <div class="d-flex flex-column vote-controls">
-                            <a href="" title="This answer is usefull" class="vote-up">
-                                <i class="fas fa-caret-up fa-3x"></i>
+                            <a href="" title="This answer is usefull" class="vote-up {{Auth::guest() ? 'off' : ''}}"
+                               onclick="event.preventDefault(); document.getElementById('up-vote-answer-{{$answer->id}}').submit()">
+                                <i class="fa fa-caret-up fa-3x"></i>
                             </a>
-                            <span class="votes-count">30</span>
-                            <a href="" title="This answer is not useful" class="vote-down off">
-                                <i class="fas fa-caret-down fa-3x"></i>
+                            <form action="/answers/{{$answer->id}}/vote" id="up-vote-answer-{{$answer->id}}" method="post" style="display: none;">
+                                @csrf
+                                <input type="hidden" name="vote" value="1">
+                            </form>
+                            <span class="votes-count">{{$answer->votes_count}}</span>
+                            <a href="" title="This answer is not useful" class="vote-down {{Auth::guest() ? 'off' : ''}}"
+                               onclick="event.preventDefault(); document.getElementById('down-vote-answer-{{$answer->id}}').submit()">
+                                <i class="fa fa-caret-down fa-3x"></i>
                             </a>
+                            <form action="/answers/{{$answer->id}}/vote" id="down-vote-answer-{{$answer->id}}" method="post" style="display: none;">
+                                @csrf
+                                <input type="hidden" name="vote" value="-1">
+                            </form>
                             @can('accept', $answer)
                                 <a href="" title="Mark this answer as best answer" class="{{$answer->status}} mt-2" onclick="event.preventDefault(); document.getElementById('accept-answer-{{$answer->id}}').submit()">
                                     <i class="fas fa-check fa-2x"></i>
