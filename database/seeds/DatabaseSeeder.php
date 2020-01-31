@@ -17,7 +17,8 @@ class DatabaseSeeder extends Seeder
 //        factory(\App\Models\Answer::class, 250)->create();
         $this->call([
             UsersQuestionsAnswersTableSeeder::class,
-            FavoritesTableSeeder::class
+            FavoritesTableSeeder::class,
+            VotablesTableSeeder::class
         ]);
     }
 }
