@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use App\Traits\VotableTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
 class Question extends Model
 {
+    use VotableTrait;
     protected $guarded = [];
 
     public function user()
@@ -77,18 +79,5 @@ class Question extends Model
         return $this->favorites->count();
     }
 
-    public function votes()
-    {
-        return $this->morphToMany(User::class, 'votable');
-    }
 
-    public function upVotes()
-    {
-        return $this->votes()->wherePivot('vote', 1);
-    }
-
-    public function downVotes()
-    {
-        return $this->votes()->wherePivot('vote', -1);
-    }
 }
