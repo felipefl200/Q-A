@@ -18,49 +18,19 @@
                         </div>
                         <hr>
                         <div class="media">
-                            <div class="d-flex flex-column vote-controls">
-                                <a href="" title="This question is usefull" class="vote-up {{Auth::guest() ? 'off' : ''}}"
-                                   onclick="event.preventDefault(); document.getElementById('up-vote-question-{{$question->id}}').submit()">
-                                    <i class="fa fa-caret-up fa-3x"></i>
-                                </a>
-                                <form action="/questions/{{$question->id}}/vote" id="up-vote-question-{{$question->id}}" method="post" style="display: none;">
-                                    @csrf
-                                    <input type="hidden" name="vote" value="1">
-                                </form>
-                                <span class="votes-count">{{$question->votes_count}}</span>
-                                <a href="" title="This question is not useful" class="vote-down {{Auth::guest() ? 'off' : ''}}"
-                                   onclick="event.preventDefault(); document.getElementById('down-vote-question-{{$question->id}}').submit()">
-                                    <i class="fa fa-caret-down fa-3x"></i>
-                                </a>
-                                <form action="/questions/{{$question->id}}/vote" id="down-vote-question-{{$question->id}}" method="post" style="display: none;">
-                                    @csrf
-                                    <input type="hidden" name="vote" value="-1">
-                                </form>
-                                <a href="" title="Click to mark as favorite question(Click again to undo)" class="favorite mt-2 {{Auth::guest() ? 'off' : ($question->is_favorited ? 'favorited' : '')}}"
-                                   onclick="event.preventDefault(); document.getElementById('favorite-question-{{$question->id}}').submit()">
-                                    <i class="fa fa-star fa-2x"></i>
-                                    <span class="favorite-count">{{$question->favorites_count}}</span>
-                                </a>
-                                <form action="/questions/{{$question->id}}/favorites" id="favorite-question-{{$question->id}}" method="post" style="display: none;">
-                                    @csrf
-                                    @if($question->is_favorited)
-                                        @method('DELETE')
-                                    @endif
-                                </form>
-                            </div>
+                            @include('shared._vote', [
+                            'model' => $question
+                            ])
                             <div class="media-body">
                                 {!!  $question->body_html !!}
-                                <div class="float-right mt-1">
-                                        <span class="text-muted">
-                                            Answered {{$question->created_date}}
-                                        </span>
-                                    <div class="media mt-3">
-                                        <a href="{{$question->user->url}}" class="pr-2">
-                                            <img src="{{$question->user->avatar}}" alt="">
-                                        </a>
-                                        <div class="media-body mt-1">
-                                            <a href="{{$question->user->url}}">{{$question->user->name}}</a>
-                                        </div>
+                                <div class="row">
+                                    <div class="col-4"></div>
+                                    <div class="col-4"></div>
+                                    <div class="col-4">
+                                        @include('shared._author', [
+                                        'model' => $question,
+                                        'label' => 'asked'
+                                        ])
                                     </div>
                                 </div>
                             </div>
